@@ -20,13 +20,19 @@ const Todo = () => {
 		refreshTodo();
 	}, []);
 
-	const refreshTodo = () => {
-		axios.get(`${URL}?sort=-createdAt`).then((response) => {
+	const refreshTodo = (description = "") => {
+		//console.log("refreshTodo", description);
+		const search = description ? `&description__regex=/${description}/` : "";
+		axios.get(`${URL}?sort=-createdAt${search}`).then((response) => {
 			setTodo({
-				description: "",
+				description,
 				list: response.data,
 			});
 		});
+	};
+
+	const handleSearch = () => {
+		refreshTodo(todo.description);
 	};
 
 	const handleChange = (e) => {
@@ -40,14 +46,14 @@ const Todo = () => {
 		console.log("done", todo);
 		axios
 			.put(`${URL}/${todo._id}`, { ...todo, done: true })
-			.then((_) => refreshTodo());
+			.then((_) => refreshTodo(todo.description));
 	};
 
 	const handleMarkAsPending = (todo) => {
 		console.log("done", todo);
 		axios
 			.put(`${URL}/${todo._id}`, { ...todo, done: false })
-			.then((_) => refreshTodo());
+			.then((_) => refreshTodo(todo.description));
 	};
 
 	const handleAdd = () => {
@@ -56,7 +62,9 @@ const Todo = () => {
 	};
 
 	const handleRemove = (todo) => {
-		axios.delete(`${URL}/${todo._id}`).then((_) => refreshTodo());
+		axios
+			.delete(`${URL}/${todo._id}`)
+			.then((_) => refreshTodo(todo.description));
 	};
 
 	return (
@@ -66,6 +74,7 @@ const Todo = () => {
 				description={todo.description}
 				handleAdd={() => handleAdd()}
 				handleChange={handleChange}
+				handleSearch={() => handleSearch()}
 			/>
 			<TodoList
 				todoList={todo.list}
