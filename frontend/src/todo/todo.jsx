@@ -67,6 +67,10 @@ const Todo = () => {
 			.then((_) => refreshTodo(todo.description));
 	};
 
+	const handleClear = () => {
+		refreshTodo();
+	};
+
 	return (
 		<div>
 			<PageHeader name="Tarefas" small="Cadastro" />
@@ -75,6 +79,7 @@ const Todo = () => {
 				handleAdd={() => handleAdd()}
 				handleChange={handleChange}
 				handleSearch={() => handleSearch()}
+				handleClear={() => handleClear()}
 			/>
 			<TodoList
 				todoList={todo.list}

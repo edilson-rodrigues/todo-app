@@ -3,7 +3,11 @@ import styled from "styled-components";
 
 const ButtonTodo = styled.button`
 	margin-right: 5px;
-	width: 50px;
+	width: 37px;
+
+	@media screen and (max-width: 765px) {
+		margin-top: 5px;
+	}
 `;
 
 const IconButton = (props) => {

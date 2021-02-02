@@ -51,7 +51,7 @@ const TodoList = (props) => {
 			<thead>
 				<tr>
 					<th>Descrição</th>
-					<th>Ações</th>
+					<th style={{ width: "130px" }}>Ações</th>
 				</tr>
 			</thead>
 			<tbody>{renderRows()}</tbody>
