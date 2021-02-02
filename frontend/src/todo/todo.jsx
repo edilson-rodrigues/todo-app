@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import PageHeader from "../template/pageHeader";
@@ -15,18 +15,34 @@ const URL = "http://localhost:3003/api/todos";
 const Todo = () => {
 	const [todo, setTodo] = useState(todos);
 
+	useEffect(() => {
+		console.log("useEffect");
+		refreshTodo();
+	}, []);
+
+	const refreshTodo = () => {
+		axios.get(`${URL}?sort=-createdAt`).then((response) => {
+			setTodo({
+				description: "",
+				list: response.data,
+			});
+		});
+	};
+
 	const handleChange = (e) => {
 		setTodo({
 			description: e.target.value,
+			list: [...todo.list],
 		});
 	};
 
 	const handleAdd = () => {
-		console.log("add", todo.description);
 		const description = todo.description;
-		axios.post(URL, { description }).then((response) => {
-			console.log("funcionou", response);
-		});
+		axios.post(URL, { description }).then((_) => refreshTodo());
+	};
+
+	const handleRemove = (todo) => {
+		axios.delete(`${URL}/${todo._id}`).then((_) => refreshTodo());
 	};
 
 	return (
@@ -37,7 +53,7 @@ const Todo = () => {
 				handleAdd={() => handleAdd()}
 				handleChange={handleChange}
 			/>
-			<TodoList />
+			<TodoList todoList={todo.list} handleRemove={handleRemove} />
 		</div>
 	);
 };
