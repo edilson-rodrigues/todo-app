@@ -3,6 +3,7 @@ import Grid from "../template/grid";
 import IconButton from "../template/iconButton";
 
 const TodoForm = (props) => {
+	const { handleAdd, handleChange, description } = props;
 	return (
 		<div role="form" className="todoForm">
 			<Grid cols="12 9 10">
@@ -10,10 +11,12 @@ const TodoForm = (props) => {
 					id="description"
 					className="form-control"
 					placeholder="Adcione uma tarefa"
+					onChange={(e) => handleChange(e)}
+					value={description}
 				/>
 			</Grid>
 			<Grid cols="12 3 2">
-				<IconButton style="primary" icon="plus" />
+				<IconButton style="primary" icon="plus" onClick={handleAdd} />
 			</Grid>
 		</div>
 	);
