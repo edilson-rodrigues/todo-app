@@ -36,6 +36,20 @@ const Todo = () => {
 		});
 	};
 
+	const handleMarkAsDone = (todo) => {
+		console.log("done", todo);
+		axios
+			.put(`${URL}/${todo._id}`, { ...todo, done: true })
+			.then((_) => refreshTodo());
+	};
+
+	const handleMarkAsPending = (todo) => {
+		console.log("done", todo);
+		axios
+			.put(`${URL}/${todo._id}`, { ...todo, done: false })
+			.then((_) => refreshTodo());
+	};
+
 	const handleAdd = () => {
 		const description = todo.description;
 		axios.post(URL, { description }).then((_) => refreshTodo());
@@ -53,7 +67,12 @@ const Todo = () => {
 				handleAdd={() => handleAdd()}
 				handleChange={handleChange}
 			/>
-			<TodoList todoList={todo.list} handleRemove={handleRemove} />
+			<TodoList
+				todoList={todo.list}
+				handleRemove={handleRemove}
+				handleMarkAsDone={handleMarkAsDone}
+				handleMarkAsPending={handleMarkAsPending}
+			/>
 		</div>
 	);
 };
